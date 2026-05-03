@@ -1,0 +1,97 @@
+From 733a7fad7a2406f45884cda39fdb122d4063c9a2 Mon Sep 17 00:00:00 2001
+From: Kung66130 <89530325+Kung66130@users.noreply.github.com>
+Date: Thu, 9 Apr 2026 16:03:07 +0700
+Subject: [PATCH] Make user search resilient to schema drift
+
+---
+ server/index.js | 60 ++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 57 insertions(+), 3 deletions(-)
+
+diff --git a/server/index.js b/server/index.js
+index bf27869..f1ba76c 100644
+--- a/server/index.js
++++ b/server/index.js
+@@ -122,6 +122,24 @@ const buildUserSearchOrFilter = (query, options = {}) => {
+         .join(',');
+ };
+ 
++const matchesUserSearch = (user, query) => {
++    const terms = sanitizeSearchTerm(query).toLowerCase().split(/\s+/).filter(Boolean);
++
++    if (terms.length === 0) {
++        return true;
++    }
++
++    const haystacks = [
++        user?.name,
++        user?.username,
++        user?.id
++    ]
++        .filter(Boolean)
++        .map((value) => String(value).toLowerCase());
++
++    return terms.every((term) => haystacks.some((value) => value.includes(term)));
++};
++
+ const touchUserPresence = async (userId) => {
+     if (!supabaseEnabled || !userId) {
+         return;
+@@ -921,7 +939,23 @@ app.get('/api/users/search', async (req, res) => {
+             return res.json(results);
+         } catch (err) {
+             console.error('Initial suggestions error:', err);
+-            return res.status(500).json({ error: err.message });
++            try {
++                let fallbackQuery = supabase
++                    .from('users')
++                    .select('*')
++                    .limit(20);
++
++                if (currentUserId) {
++                    fallbackQuery = fallbackQuery.neq('id', currentUserId);
++                }
++
++                const { data: users, error } = await fallbackQuery;
++                if (error) throw error;
++
++                return res.json((users || []).map((user) => toPublicUser(user)));
++            } catch (fallbackError) {
++                return res.status(500).json({ error: fallbackError.message });
++            }
+         }
+     }
+ 
+@@ -966,8 +1000,28 @@ app.get('/api/users/search', async (req, res) => {
+         }
+ 
+         if (error) {
+-            console.error('[Search] Error:', error);
+-            throw error;
++            console.error('[Search] Primary query error:', error);
++
++            let jsFallbackQuery = supabase
++                .from('users')
++                .select('*')
++                .neq('id', 'npc_flare_official')
++                .limit(100);
++
++            if (currentUserId) {
++                jsFallbackQuery = jsFallbackQuery.neq('id', currentUserId);
++            }
++
++            const { data: fallbackUsers, error: fallbackError } = await jsFallbackQuery;
++
++            if (fallbackError) {
++                console.error('[Search] Fallback query error:', fallbackError);
++                throw fallbackError;
++            }
++
++            users = (fallbackUsers || [])
++                .filter((user) => matchesUserSearch(user, searchQuery))
++                .slice(0, 20);
+         }
+ 
+         const results = (users || []).map((user) => toPublicUser(user));
+-- 
+2.53.0.windows.1
+

@@ -1,0 +1,5 @@
+# Private credentials
+pi_secrets.txt
+
+# Temporary files
+*.tmp

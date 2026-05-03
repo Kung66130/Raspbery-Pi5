@@ -1,0 +1,3 @@
+# name|repo_url|branch|path|install_command|post_update_command
+pi-status|https://github.com/Kung66130/Pi-Status.git|main|/home/raspberrykung/Pi-Status|npm --prefix /home/raspberrykung/Pi-Status install --omit=dev|sudo systemctl restart pi-controler
+# flare|https://github.com/Kung66130/flare-social.git|main|/home/admin/Flare|docker build -t flare-app /home/admin/Flare|docker restart flare-container
