@@ -6,3 +6,6 @@ pi_secrets.txt
 
 # Deployment archives
 *.tar
+
+# Logs
+*.log
