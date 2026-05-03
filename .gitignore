@@ -9,3 +9,6 @@ pi_secrets.txt
 
 # Logs
 *.log
+
+# Network scan results
+arp_*.txt
