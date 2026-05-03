@@ -3,3 +3,6 @@ pi_secrets.txt
 
 # Temporary files
 *.tmp
+
+# Deployment archives
+*.tar
