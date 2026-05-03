@@ -1,0 +1,6 @@
+--- BACKEND STARTING ---
+✓ Supabase client initialized
+✓ SECRET_KEY loaded successfully
+✓ Serving static frontend from ./dist
+Backend Server with Supabase running at http://localhost:3004
+^C

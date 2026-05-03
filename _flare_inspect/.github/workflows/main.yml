@@ -1,0 +1,82 @@
+name: Flare - Build and Deploy
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate secrets and write runtime env
+        shell: bash
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+        run: |
+          set -euo pipefail
+
+          required_keys=(
+            SECRET_KEY
+            SUPABASE_URL
+            SUPABASE_SERVICE_ROLE_KEY
+            VITE_SUPABASE_ANON_KEY
+          )
+
+          for key in "${required_keys[@]}"; do
+            if [ -z "${!key:-}" ]; then
+              echo "::error::$key is not set in GitHub Actions secrets"
+              exit 1
+            fi
+          done
+
+          if [ -z "${VITE_SUPABASE_URL:-}" ]; then
+            VITE_SUPABASE_URL="$SUPABASE_URL"
+          fi
+
+          cat > .env.runtime <<EOF
+          PORT=80
+          NODE_ENV=production
+          SECRET_KEY=${SECRET_KEY}
+          SUPABASE_URL=${SUPABASE_URL}
+          SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+          FRONTEND_URL=${FRONTEND_URL:-}
+          EOF
+
+          cat > .env.build <<EOF
+          VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+          VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+          EOF
+
+      - name: Build and run with Docker
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          source .env.build
+
+          docker build \
+            --pull \
+            --build-arg VITE_SUPABASE_URL="${VITE_SUPABASE_URL}" \
+            --build-arg VITE_SUPABASE_ANON_KEY="${VITE_SUPABASE_ANON_KEY}" \
+            -t flare-app .
+
+          docker stop flare-container || true
+          docker rm flare-container || true
+
+          docker run -d \
+            --name flare-container \
+            --restart unless-stopped \
+            --env-file .env.runtime \
+            -p 8080:80 \
+            flare-app
+
+          rm -f .env.runtime .env.build

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raspberry Pi Status</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Standalone Container</p>
+        <h1>หน้าจอสถานะ Raspberry Pi</h1>
+        <p class="subtitle">แดชบอร์ดนี้รันแยกจากแอปหลัก และดึงสถานะจริงจาก Pi เพื่อดูเครื่องแบบสด ๆ</p>
+      </div>
+      <button id="refreshButton" class="refresh-button">รีเฟรชตอนนี้</button>
+    </section>
+
+    <section class="pill-row">
+      <div id="onlinePill" class="pill neutral">กำลังเชื่อมต่อ</div>
+      <div id="targetPill" class="pill neutral">ปลายทาง SSH</div>
+      <div id="timePill" class="pill neutral">อัปเดตล่าสุด</div>
+    </section>
+
+    <section id="errorBox" class="error-box hidden"></section>
+
+    <section class="grid">
+      <article class="card">
+        <span>เครื่อง</span>
+        <strong id="hostname">Loading...</strong>
+        <small id="model">กำลังอ่านรุ่นอุปกรณ์</small>
+      </article>
+      <article class="card">
+        <span>Uptime</span>
+        <strong id="uptime">Loading...</strong>
+        <small id="bootTime">Boot time</small>
+      </article>
+      <article class="card">
+        <span>CPU Temp</span>
+        <strong id="cpuTemp">Loading...</strong>
+        <small>อุณหภูมิของชิปหลัก</small>
+      </article>
+      <article class="card">
+        <span>CPU Clock</span>
+        <strong id="cpuClock">Loading...</strong>
+        <small id="loadAverage">Load average</small>
+      </article>
+      <article class="card">
+        <span>Memory</span>
+        <strong id="memoryUsage">Loading...</strong>
+        <small id="memoryDetail">กำลังโหลด</small>
+      </article>
+      <article class="card">
+        <span>IP Address</span>
+        <strong id="ipAddress">Loading...</strong>
+        <small>ที่อยู่ IP ภายในของ Pi</small>
+      </article>
+      <article class="card">
+        <span>Fan RPM</span>
+        <strong id="fanRpm">Loading...</strong>
+        <small id="fanLevel">ระดับพัดลม</small>
+      </article>
+      <article class="card">
+        <span>Fan PWM</span>
+        <strong id="fanPwm">Loading...</strong>
+        <small id="fanMode">สถานะพัดลม</small>
+      </article>
+      <article class="card">
+        <span>Power Estimate</span>
+        <strong id="powerWatts">Loading...</strong>
+        <small id="powerMeta">ค่าประมาณการใช้ไฟของเครื่อง</small>
+      </article>
+    </section>
+
+    <section class="detail-grid">
+      <article class="panel">
+        <h2>ทรัพยากรระบบ</h2>
+        <div class="usage">
+          <div class="usage-head">
+            <span>RAM Usage</span>
+            <strong id="ramPercent">0%</strong>
+          </div>
+          <div class="usage-track"><div id="ramBar" class="usage-fill memory"></div></div>
+          <small id="ramText">0 MB / 0 MB</small>
+        </div>
+        <div class="usage">
+          <div class="usage-head">
+            <span>Disk Usage</span>
+            <strong id="diskPercent">0%</strong>
+          </div>
+          <div class="usage-track"><div id="diskBar" class="usage-fill disk"></div></div>
+          <small id="diskText">0 GB used</small>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>รายละเอียดเครื่อง</h2>
+        <dl class="facts">
+          <div><dt>ปลายทาง SSH</dt><dd id="sshTarget">Loading...</dd></div>
+          <div><dt>พื้นที่รวม</dt><dd id="diskTotal">Loading...</dd></div>
+          <div><dt>พื้นที่ว่าง</dt><dd id="diskFree">Loading...</dd></div>
+          <div><dt>รีเฟรชอัตโนมัติ</dt><dd>ทุก 1 นาที</dd></div>
+        </dl>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="chart-head">
+        <div>
+          <h2>กราฟความร้อนเครื่อง</h2>
+          <p class="chart-subtitle">อุณหภูมิ CPU ย้อนหลังจากข้อมูลล่าสุดที่เก็บได้</p>
+        </div>
+        <div class="chart-legend">
+          <span class="chart-dot"></span>
+          <span id="chartLatest">กำลังโหลด</span>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <svg id="tempChart" class="temp-chart" viewBox="0 0 760 260" preserveAspectRatio="none" aria-label="Temperature chart">
+          <g id="chartGrid"></g>
+          <path id="chartArea" class="chart-area" d=""></path>
+          <path id="chartLine" class="chart-line" d=""></path>
+          <g id="chartPoints"></g>
+        </svg>
+        <div id="chartEmpty" class="chart-empty">กำลังเก็บข้อมูลกราฟอุณหภูมิ</div>
+      </div>
+      <div id="chartLabels" class="chart-labels"></div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+[Unit]
+Description=Update Pi-Status from GitHub
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=raspberrykung
+EnvironmentFile=/home/raspberrykung/Pi-Status/.env
+Environment=APP_DIR=/home/raspberrykung/Pi-Status
+Environment=PI_STATUS_SERVICE_NAME=pi-controler
+ExecStart=/usr/bin/env bash /home/raspberrykung/Pi-Status/deploy/pi-status-update.sh

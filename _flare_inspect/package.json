@@ -1,0 +1,50 @@
+{
+  "name": "flare-social",
+  "private": true,
+  "version": "2.2.4",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "start": "node server/index.js",
+    "backend": "node server/index.js",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build:android": "vite build && npx cap sync android",
+    "open:android": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.1.0",
+    "@capacitor/app": "^8.0.1",
+    "@capacitor/browser": "^8.0.1",
+    "@capacitor/camera": "^8.0.0",
+    "@capacitor/cli": "^8.1.0",
+    "@capacitor/core": "^8.1.0",
+    "@capacitor/geolocation": "^8.0.0",
+    "@capacitor/local-notifications": "^8.0.2",
+    "@supabase/supabase-js": "^2.39.3",
+    "bcryptjs": "^3.0.3",
+    "capacitor-voice-recorder": "^7.0.6",
+    "clsx": "^2.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^16.3.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.1.0",
+    "framer-motion": "^10.16.4",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "lucide-react": "^0.300.0",
+    "multer": "^2.0.2",
+    "nodemailer": "^8.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.8"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}

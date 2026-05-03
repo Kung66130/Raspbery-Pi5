@@ -1,0 +1,12 @@
+[Unit]
+Description=Check Raspberry Pi health and reboot after prolonged failure
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment=PI_WATCHDOG_STATE_DIR=/var/lib/pi-health-watchdog
+Environment=PI_WATCHDOG_MAX_FAILURES=12
+Environment=PI_WATCHDOG_CHECK_URL=http://127.0.0.1:8081/api/status
+Environment=PI_WATCHDOG_SERVICES=pi-controler,tailscaled
+ExecStart=/usr/bin/env bash /home/raspberrykung/Pi-Status/deploy/pi-health-watchdog.sh

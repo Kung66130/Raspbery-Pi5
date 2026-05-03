@@ -1,0 +1,7 @@
+tunnel: pi-controler
+credentials-file: /etc/cloudflared/pi-controler.json
+
+ingress:
+  - hostname: YOUR_PUBLIC_DOMAIN
+    service: http://localhost:8080
+  - service: http_status:404

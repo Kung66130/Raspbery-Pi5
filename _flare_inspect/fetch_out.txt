@@ -1,0 +1,2 @@
+STATUS: 400
+BODY: {"error":"User not found"}

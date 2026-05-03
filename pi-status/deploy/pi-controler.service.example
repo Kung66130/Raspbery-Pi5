@@ -1,0 +1,17 @@
+[Unit]
+Description=pi-controler service with Slack commands
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=raspberrykung
+WorkingDirectory=/home/raspberrykung/Pi-Status
+Environment=NODE_ENV=production
+EnvironmentFile=/home/raspberrykung/Pi-Status/.env
+ExecStart=/usr/bin/npm start
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

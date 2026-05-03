@@ -1,0 +1,105 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Coin Metal Gradients -->
+        <linearGradient id="metal_plate" x1="0" y1="0" x2="512" y2="512"
+            gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#E2E8F0" />
+            <stop offset="0.2" stop-color="#CBD5E1" />
+            <stop offset="0.4" stop-color="#F8FAFC" />
+            <stop offset="0.5" stop-color="#94A3B8" />
+            <stop offset="0.6" stop-color="#F1F5F9" />
+            <stop offset="0.8" stop-color="#475569" />
+            <stop offset="1" stop-color="#94A3B8" />
+        </linearGradient>
+
+        <linearGradient id="rim_grad" x1="256" y1="0" x2="256" y2="512"
+            gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#F8FAFC" />
+            <stop offset="0.5" stop-color="#475569" />
+            <stop offset="1" stop-color="#F1F5F9" />
+        </linearGradient>
+
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="blur" />
+            <feOffset dx="0" dy="8" in="blur" result="offsetBlur" />
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.5" />
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+
+        <!-- Flame/Logo Gradients -->
+        <linearGradient id="flare_grad" x1="256" y1="100" x2="256" y2="400"
+            gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#FDBA74" /> <!-- Yellow-Orange -->
+            <stop offset="0.25" stop-color="#F97316" /> <!-- Orange -->
+            <stop offset="0.5" stop-color="#DC2626" /> <!-- Red -->
+            <stop offset="0.75" stop-color="#7C3AED" /> <!-- Purple -->
+            <stop offset="1" stop-color="#2563EB" /> <!-- Blue -->
+        </linearGradient>
+
+        <linearGradient id="swoosh_grad" x1="180" y1="380" x2="400" y2="350"
+            gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#1E3A8A" />
+            <stop offset="0.5" stop-color="#7C3AED" />
+            <stop offset="1" stop-color="#F43F5E" />
+        </linearGradient>
+    </defs>
+
+    <!-- Outer Rim -->
+    <circle cx="256" cy="256" r="230" fill="url(#rim_grad)" stroke="#1E293B" stroke-width="4" />
+    <circle cx="256" cy="256" r="215" fill="url(#metal_plate)" stroke="#475569" stroke-width="2" />
+
+    <!-- Inner Dark Ring -->
+    <circle cx="256" cy="256" r="205" fill="none" stroke="#0F172A" stroke-width="6" opacity="0.8" />
+
+    <!-- Polygonal Flames in background -->
+    <g opacity="0.9" filter="url(#shadow)">
+        <path
+            d="M220 320 L160 280 L190 220 L140 180 L200 120 L240 180 L280 80 L320 180 L380 140 L340 240 L400 300 L320 340 Z"
+            fill="url(#flare_grad)" opacity="0.6" />
+        <path d="M256 380 L200 320 L230 250 L180 200 L256 100 L330 200 L280 250 L310 320 Z"
+            fill="url(#flare_grad)" />
+    </g>
+
+    <!-- Polygonal 'F' Structure -->
+    <g transform="translate(195, 130)" filter="url(#shadow)">
+        <!-- Vertical stem -->
+        <polygon points="0,0 45,0 45,230 0,230" fill="#2563EB" opacity="0.9" />
+        <polygon points="0,0 20,30 20,200 0,230" fill="#1E40AF" />
+
+        <!-- Top arm -->
+        <polygon points="45,0 130,0 130,45 45,45" fill="#DC2626" />
+        <polygon points="45,0 130,0 110,45 45,45" fill="#B91C1C" />
+
+        <!-- Middle arm -->
+        <polygon points="45,90 110,90 110,135 45,135" fill="#F97316" />
+        <polygon points="45,90 110,90 100,135 45,135" fill="#EA580C" />
+
+        <!-- Shine effects on F -->
+        <polygon points="5,5 40,5 35,225 10,225" fill="white" opacity="0.1" />
+    </g>
+
+    <!-- Bottom Swoosh -->
+    <path d="M150 420 Q256 360 420 400" stroke="url(#swoosh_grad)" stroke-width="8"
+        stroke-linecap="round" fill="none" opacity="0.9" />
+    <path d="M160 415 Q256 370 410 405" stroke="white" stroke-width="2" stroke-linecap="round"
+        fill="none" opacity="0.4" />
+
+    <!-- Sparkles -->
+    <g fill="white" opacity="0.8">
+        <path d="M430 150 L435 165 L450 170 L435 175 L430 190 L425 175 L410 170 L425 165 Z" />
+        <path d="M120 120 L123 130 L133 133 L123 136 L120 146 L117 136 L107 133 L117 130 Z" />
+        <path d="M400 350 L402 356 L408 358 L402 360 L400 366 L398 360 L392 358 L398 356 Z" />
+    </g>
+
+    <!-- Text -->
+    <text x="256" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900"
+        font-size="64" fill="black" letter-spacing="4">FLARE</text>
+    <text x="256" y="478" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900"
+        font-size="64" fill="white" opacity="0.1" letter-spacing="4">FLARE</text>
+
+</svg>

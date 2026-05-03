@@ -1,0 +1,24 @@
+display_information:
+  name: pi-controler
+  description: Raspberry Pi status and control from Slack
+  background_color: "#1f2937"
+
+features:
+  slash_commands:
+    - command: /pi
+      url: https://YOUR_PUBLIC_DOMAIN/api/slack/commands/pi
+      description: Check Raspberry Pi status or run safe commands
+      usage_hint: status
+      should_escape: false
+
+oauth_config:
+  scopes:
+    bot:
+      - commands
+
+settings:
+  interactivity:
+    is_enabled: false
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false

@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: flare-backend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: node server/index.js
+    envVars:
+      - key: NODE_VERSION
+        value: 22.14.0
+      - key: SUPABASE_URL
+        sync: false  # You must add this manually in Render Dashboard
+      - key: SUPABASE_ANON_KEY
+        sync: false  # You must add this manually in Render Dashboard
+      - key: SECRET_KEY
+        generate: true # Render will generate a random secure key for you

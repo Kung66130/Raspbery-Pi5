@@ -1,0 +1,29 @@
+{
+  "appId": "com.flare.social",
+  "appName": "Flare Social",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true,
+    "allowNavigation": [
+      "*"
+    ]
+  },
+  "android": {
+    "backgroundColor": "#0a0a14",
+    "allowMixedContent": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#0a0a14",
+      "androidSplashResourceName": "splash",
+      "showSpinner": false,
+      "launchAutoHide": true
+    },
+    "StatusBar": {
+      "backgroundColor": "#0a0a14",
+      "style": "DARK"
+    }
+  }
+}

@@ -1,0 +1,2 @@
+STATUS: 400
+BODY: {"error":"Email/Phone already exists"}
