@@ -12,3 +12,6 @@ pi_secrets.txt
 
 # Network scan results
 arp_*.txt
+.env
+config.json
+*.db*
