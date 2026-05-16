@@ -667,8 +667,9 @@ const server = app.listen(PORT, () => {
   console.log(`pi-controler service listening on http://localhost:${PORT} (${PI_COMMAND_MODE})`);
 });
 
-pollTemperatureHistory();
-setInterval(pollTemperatureHistory, TEMP_HISTORY_POLL_MS);
+// Disabled background polling for on-demand only mode
+// pollTemperatureHistory();
+// setInterval(pollTemperatureHistory, TEMP_HISTORY_POLL_MS);
 
 server.on('close', () => {
   console.error('[server close] HTTP server closed');

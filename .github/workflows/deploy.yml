@@ -1,0 +1,41 @@
+name: Deploy to Raspberry Pi 5
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 1'  # Every Monday at 09:00 AM (Thai Time)
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTH_KEY }}
+
+      - name: Deploy to Pi via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 100.123.233.122
+          username: admin
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Navigate to project or clone if it doesn't exist
+            if [ ! -d "~/Raspbery-Pi5" ]; then
+              git clone https://github.com/Kung66130/Raspbery-Pi5.git ~/Raspbery-Pi5
+            fi
+            cd ~/Raspbery-Pi5
+            
+            # Update code
+            git pull origin main
+            
+            # Set permissions for scripts
+            chmod +x *.sh
+            
+            echo "Deployment successful at $(date)"
