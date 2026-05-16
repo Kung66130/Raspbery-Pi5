@@ -6,7 +6,8 @@ files_to_sync = {
     'pi-power-saver.sh': '~/pi-power-saver.sh'
 }
 
-password = "Pi5-Secure-@9674"
+# Password removed for security. Use SSH keys for authentication.
+# Deployment is now handled via GitHub Actions.
 
 for local, remote in files_to_sync.items():
     if os.path.exists(local):
@@ -21,7 +22,7 @@ for local, remote in files_to_sync.items():
         print(f"Done syncing {local}")
 
 # Move power saver to final location
-print("Setting up power saver permissions...")
-setup_cmd = f"echo '{password}' | ssh admin@100.123.233.122 'sudo -S mv ~/pi-power-saver.sh /usr/local/bin/pi-power-saver.sh; sudo -S chmod +x /usr/local/bin/pi-power-saver.sh'"
-subprocess.run(setup_cmd, shell=True)
-print("All files synced and setup completed!")
+# print("Setting up power saver permissions...")
+# setup_cmd = f"echo '{password}' | ssh admin@100.123.233.122 'sudo -S mv ~/pi-power-saver.sh /usr/local/bin/pi-power-saver.sh; sudo -S chmod +x /usr/local/bin/pi-power-saver.sh'"
+# subprocess.run(setup_cmd, shell=True)
+# print("All files synced and setup completed!")
